@@ -1,59 +1,72 @@
 import React, {Component} from 'react';
 
-class LightningCounter extends React.Component {
-  constructor(props) {
+class Circle extends React.Component {
+  constructor(props){
     super(props);
+
     this.state = {
-      strikes: 0
+      score: 0
     };
 
-    this.timerTick = this.timerTick.bind(this);
+    this.handleClickIncrement = this.handleClickIncrement.bind(this);
   }
 
-  timerTick() {
+  handleClickIncrement(e) {
+    if((!!this.state) && this.state.score >= 10){
+      alert(`You have reached the maximum ${this.state.score}`);
+      return
+    }
+
     this.setState({
-      strikes: this.state.strikes + 10
-    })
+      score: this.state.score + 1
+    });
+
   }
 
-  componentDidMount() {
-    setInterval(this.timerTick, 100)
-  }
+
 
 
   render() {
-    return (
-      <h1>{this.state.strikes}</h1>
-    )
-  }
-}
-
-class CounterDisplay
-  extends React.Component {
-  render() {
-    const divStyle = {
-      width: 250,
+    const circleStyle = {
+      padding: 10,
+      margin: 20,
+      display: "inline-block",
+      backgroundColor: this.props.bgColor,
+      borderRadius: "45%",
+      width: 100,
+      height: 100,
       textAlign: 'center',
-      backgroundColor: "black",
-      padding: 40,
-      fontFamily: "sans-serif",
-      color: "#999"
-    };
-    return (
-      <div style={divStyle}>
-        <LightningCounter />
-      </div>
-    )
+      fontSize: 30,
+      color: 'white',
+      fontFamily: 'helvetica',
+      userSelect: 'none',
 
+    };
+
+    return (
+      <div style={circleStyle} onClick={this.handleClickIncrement}><span>{this.state.score}</span></div>
+    );
   }
 }
+
+const showCircle = () => {
+  const colors = ['#393E41', '#E94F37', '#1C89BF', '#A1D363', '#D95A73',
+    '#54D99A', '#D90600', '#4A264B'];
+
+  const renderData = [];
+   colors.forEach(color => {
+     renderData.push(<Circle key={color} bgColor={color}/>)
+   });
+  return renderData;
+};
 
 class App extends Component {
 
   render() {
     return (
       <div>
-        <CounterDisplay />
+        {showCircle()}
+
       </div>
     );
   }
