@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 class Circle extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -12,19 +12,22 @@ class Circle extends React.Component {
   }
 
   handleClickIncrement(e) {
-    if((!!this.state) && this.state.score >= 10){
+    if (this.state.score >= 100) {
+      this.setState({
+        score: 100
+      })
+    } else if ((!!this.state) && this.state.score >= 100) {
       alert(`You have reached the maximum ${this.state.score}`);
-      return
     }
 
+    let currentScore = this.state.score;
+    e.shiftKey ? currentScore += 10 : currentScore += 1;
+
     this.setState({
-      score: this.state.score + 1
-    });
+      score: currentScore
+    })
 
   }
-
-
-
 
   render() {
     const circleStyle = {
@@ -40,36 +43,49 @@ class Circle extends React.Component {
       color: 'white',
       fontFamily: 'helvetica',
       userSelect: 'none',
-
     };
 
     return (
-      <div style={circleStyle} onClick={this.handleClickIncrement}><span>{this.state.score}</span></div>
+      <div style={circleStyle}>
+        {this.state.score}
+        <PlusButton clickHandler={this.handleClickIncrement}/>
+        </div>
     );
   }
 }
-
 const showCircle = () => {
   const colors = ['#393E41', '#E94F37', '#1C89BF', '#A1D363', '#D95A73',
     '#54D99A', '#D90600', '#4A264B'];
 
+
   const renderData = [];
-   colors.forEach(color => {
-     renderData.push(<Circle key={color} bgColor={color}/>)
-   });
+  colors.forEach(color => {
+    renderData.push(<Circle key={color} bgColor={color}/>)
+  });
   return renderData;
 };
 
-class App extends Component {
+class PlusButton extends React.Component{
+
+  render() {
+    return (
+      <button onClick={this.props.clickHandler}>
+        +
+      </button>
+    )
+  }
+}
+
+class App extends React.Component {
 
   render() {
     return (
       <div>
         {showCircle()}
-
       </div>
     );
   }
 }
 
-export default App;
+export default
+App;
